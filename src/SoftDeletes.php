@@ -1,6 +1,6 @@
 <?php
 
-namespace Illuminate\Database\Eloquent;
+namespace Wilzokch\LaravelCustomSoftDelete;
 
 /**
  * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withTrashed(bool $withTrashed = true)
@@ -35,6 +35,9 @@ trait SoftDeletes
     {
         if (! isset($this->casts[$this->getDeletedAtColumn()])) {
             $this->casts[$this->getDeletedAtColumn()] = 'datetime';
+        }
+        if (! isset($this->casts[$this->getIsDeletedColumn()])) {
+            $this->casts[$this->getIsDeletedColumn()] = 'boolean';
         }
     }
 
@@ -83,9 +86,13 @@ trait SoftDeletes
 
         $time = $this->freshTimestamp();
 
-        $columns = [$this->getDeletedAtColumn() => $this->fromDateTime($time)];
+        $columns = [
+            $this->getDeletedAtColumn() => $this->fromDateTime($time),
+            $this->getIsDeletedColumn() => true,
+        ];
 
         $this->{$this->getDeletedAtColumn()} = $time;
+        $this->{$this->getIsDeletedColumn()} = true;
 
         if ($this->timestamps && ! is_null($this->getUpdatedAtColumn())) {
             $this->{$this->getUpdatedAtColumn()} = $time;
@@ -115,6 +122,7 @@ trait SoftDeletes
         }
 
         $this->{$this->getDeletedAtColumn()} = null;
+        $this->{$this->getIsDeletedColumn()} = false;
 
         // Once we have saved the model, we will fire the "restored" event so this
         // developer will do anything they need to after a restore operation is
@@ -135,7 +143,7 @@ trait SoftDeletes
      */
     public function trashed()
     {
-        return ! is_null($this->{$this->getDeletedAtColumn()});
+        return $this->getIsDeletedColumn();
     }
 
     /**
@@ -210,5 +218,25 @@ trait SoftDeletes
     public function getQualifiedDeletedAtColumn()
     {
         return $this->qualifyColumn($this->getDeletedAtColumn());
+    }
+
+    /**
+     * Get the name of the "is deleted" column.
+     *
+     * @return string
+     */
+    public function getIsDeletedColumn()
+    {
+        return defined('static::IS_DELETED') ? static::IS_DELETED : 'is_deleted';
+    }
+
+    /**
+     * Get the fully qualified "is deleted" column.
+     *
+     * @return string
+     */
+    public function getQualifiedIsDeletedColumn()
+    {
+        return $this->qualifyColumn($this->getIsDeletedColumn());
     }
 }
