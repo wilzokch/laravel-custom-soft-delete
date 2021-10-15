@@ -9,7 +9,7 @@
 	    "repositories": [
 	        {
 	            "type": "vcs",
-	            "url":  "git@bitbucket.org:wilzokch/laravel-custom-soft-delete.git"
+	            "url":  "git@github.com:wilzokch/laravel-custom-soft-delete.git"
 	        }
 	    ],
 
