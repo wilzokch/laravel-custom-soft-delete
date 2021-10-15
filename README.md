@@ -19,3 +19,33 @@
 
     	composer require wilzokch/laravel-custom-soft-delete:dev-master
 
+
+3. add the Wilzokch\LaravelCustomSoftDelete\SoftDeletes trait to the model:
+
+   <?php
+
+   namespace App\Models;
+
+   use Illuminate\Database\Eloquent\Model;
+   use Wilzokch\LaravelCustomSoftDelete\SoftDeletes;
+
+   class Flight extends Model
+   {
+       use SoftDeletes;
+   }
+
+4. add soft delete columns to your migration
+
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    Schema::table('flights', function (Blueprint $table) {
+        $table->tinyInteger('is_deleted')->default(false);
+        $table->timestamp('deleted_at')->nullable();
+    });
+
+    Schema::table('flights', function (Blueprint $table) {
+        $table->dropColumn('is_deleted');
+        $table->dropColumn('deleted_at');
+    });
+
