@@ -1,0 +1,11 @@
+{
+    "name": "wilzokch/laravel-custom-soft-delete",
+    "description": "Custom soft delete for Laravel model, is_deleted to query data, deleted_at to keep track last deletion",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Wilzokch\\LaravelCustomSoftDelete\\": "src/"
+        }
+    },
+    "require": {}
+}
