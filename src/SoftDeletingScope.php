@@ -2,6 +2,8 @@
 
 namespace Wilzokch\LaravelCustomSoftDelete;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
 class SoftDeletingScope implements Scope
