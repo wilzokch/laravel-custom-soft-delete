@@ -40,7 +40,7 @@
         use Illuminate\Support\Facades\Schema;
 
         Schema::table('flights', function (Blueprint $table) {
-            $table->tinyInteger('is_deleted')->default(false);
+            $table->tinyInteger('is_deleted')->default(false)->index();
             $table->timestamp('deleted_at')->nullable();
         });
 
